@@ -177,9 +177,22 @@
         }
 
         .upload-zone:hover {
-            background: linear-gradient(135deg, rgba(255, 170, 0, 0.2) 0%, rgba(0, 100, 255, 0.2) 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 0 40px rgba(255, 170, 0, 0.6);
+            background: linear-gradient(135deg, rgba(255, 170, 0, 0.3) 0%, rgba(0, 100, 255, 0.3) 100%);
+            transform: translateY(-4px);
+            box-shadow: 
+                0 0 50px rgba(255, 170, 0, 1),
+                0 0 100px rgba(255, 170, 0, 0.5),
+                inset 0 0 30px rgba(255, 170, 0, 0.2);
+        }
+
+        .upload-zone:hover .upload-icon {
+            filter: drop-shadow(0 0 20px rgba(255, 170, 0, 1));
+            transform: scale(1.1);
+            transition: all 0.3s ease;
+        }
+
+        .upload-zone:hover h3 {
+            text-shadow: 0 0 20px rgba(255, 170, 0, 1), 0 0 40px rgba(255, 170, 0, 0.5);
         }
 
         .upload-zone.dragging {
@@ -252,9 +265,19 @@
         }
 
         .tool-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 170, 0, 0.8);
-            background: linear-gradient(90deg, #FF9933 0%, #FFAA00 100%);
+            transform: scale(1.08);
+            box-shadow: 
+                0 0 40px rgba(255, 170, 0, 1),
+                0 0 80px rgba(255, 170, 0, 0.6),
+                inset 0 0 20px rgba(255, 255, 255, 0.3);
+            background: linear-gradient(90deg, #FFAA00 0%, #FFEE00 100%);
+            border-color: #FFEE00;
+            color: #000;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .tool-btn:hover span {
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 1));
         }
 
         .tool-btn:active {
@@ -402,9 +425,14 @@
         }
 
         .page-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(255, 170, 0, 0.8);
-            background: linear-gradient(90deg, #FF9933 0%, #FFAA00 100%);
+            transform: scale(1.08);
+            box-shadow: 
+                0 0 35px rgba(255, 170, 0, 1),
+                0 0 70px rgba(255, 170, 0, 0.6),
+                inset 0 0 15px rgba(255, 255, 255, 0.3);
+            background: linear-gradient(90deg, #FFAA00 0%, #FFEE00 100%);
+            border-color: #FFEE00;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
         }
 
         .page-info {
@@ -433,9 +461,15 @@
         }
 
         .zoom-btn:hover {
-            background: linear-gradient(90deg, #0066CC 0%, #99CCFF 100%);
+            background: linear-gradient(90deg, #99CCFF 0%, #CCFFFF 100%);
             color: #000;
-            box-shadow: 0 0 20px rgba(153, 204, 255, 0.8);
+            box-shadow: 
+                0 0 30px rgba(153, 204, 255, 1),
+                0 0 60px rgba(153, 204, 255, 0.6),
+                inset 0 0 15px rgba(255, 255, 255, 0.3);
+            border-color: #CCFFFF;
+            transform: scale(1.05);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
         }
 
         .pdf-viewer {
@@ -634,9 +668,14 @@
         }
 
         .btn-primary:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 170, 0, 0.8);
-            background: linear-gradient(90deg, #FF9933 0%, #FFAA00 100%);
+            transform: scale(1.08);
+            box-shadow: 
+                0 0 40px rgba(255, 170, 0, 1),
+                0 0 80px rgba(255, 170, 0, 0.6),
+                inset 0 0 20px rgba(255, 255, 255, 0.3);
+            background: linear-gradient(90deg, #FFAA00 0%, #FFEE00 100%);
+            border-color: #FFEE00;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
         }
 
         .btn-secondary {
@@ -649,9 +688,15 @@
         }
 
         .btn-secondary:hover {
-            background: #0066CC;
+            background: linear-gradient(90deg, #99CCFF 0%, #CCFFFF 100%);
             color: #000;
-            box-shadow: 0 0 20px rgba(153, 204, 255, 0.6);
+            box-shadow: 
+                0 0 30px rgba(153, 204, 255, 1),
+                0 0 60px rgba(153, 204, 255, 0.6),
+                inset 0 0 15px rgba(255, 255, 255, 0.3);
+            border-color: #CCFFFF;
+            transform: scale(1.05);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
         }
 
         .loading {
