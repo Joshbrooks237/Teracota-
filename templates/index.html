@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe PDF Editor - Adobe-Free PDF Editing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            padding: 2rem;
+            gap: 2rem;
+            max-width: 1800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            min-width: 320px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .upload-zone {
+            border: 3px dashed #667eea;
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        }
+
+        .upload-zone:hover {
+            border-color: #764ba2;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            transform: translateY(-2px);
+        }
+
+        .upload-zone.dragging {
+            border-color: #764ba2;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .upload-zone h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .upload-zone p {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .toolbar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .tool-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .tool-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .tool-btn:active {
+            transform: translateY(0);
+        }
+
+        .tool-btn.active {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .tool-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pdf-info {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .pdf-info.visible {
+            display: block;
+        }
+
+        .pdf-info h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+            font-size: 0.9rem;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .main-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .viewer-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .page-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .page-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .page-info {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .zoom-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .zoom-btn {
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .zoom-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .pdf-viewer {
+            flex: 1;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            background: #f5f5f5;
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .pdf-canvas-container {
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        #pdfCanvas {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            cursor: crosshair;
+        }
+
+        .annotation-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #999;
+            padding: 4rem;
+        }
+
+        .welcome-message h2 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-message p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content h3 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem 3rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            z-index: 2000;
+            text-align: center;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #fileInput {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 Vibe PDF Editor</h1>
+        <p>Powerful PDF editing without Adobe - Free, Fast, Beautiful</p>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="upload-zone" id="uploadZone">
+                <div class="upload-icon">📄</div>
+                <h3>Drop PDF Here</h3>
+                <p>or click to browse</p>
+                <input type="file" id="fileInput" accept=".pdf">
+            </div>
+
+            <div class="pdf-info" id="pdfInfo">
+                <h3>📊 Document Info</h3>
+                <div class="info-item">
+                    <span class="info-label">Filename:</span>
+                    <span class="info-value" id="infoFilename">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Pages:</span>
+                    <span class="info-value" id="infoPages">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Size:</span>
+                    <span class="info-value" id="infoSize">-</span>
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <button class="tool-btn" id="addTextBtn" disabled>
+                    <span>✏️</span> Add Text
+                </button>
+                <button class="tool-btn" id="highlightBtn" disabled>
+                    <span>🖍️</span> Highlight
+                </button>
+                <button class="tool-btn" id="addImageBtn" disabled>
+                    <span>🖼️</span> Add Image
+                </button>
+                <button class="tool-btn" id="signatureBtn" disabled>
+                    <span>✍️</span> Sign
+                </button>
+                <button class="tool-btn" id="rotateBtn" disabled>
+                    <span>🔄</span> Rotate
+                </button>
+                <button class="tool-btn" id="deletePageBtn" disabled>
+                    <span>🗑️</span> Delete Page
+                </button>
+                <button class="tool-btn" id="extractTextBtn" disabled>
+                    <span>📝</span> Extract Text
+                </button>
+                <button class="tool-btn" id="downloadBtn" disabled>
+                    <span>💾</span> Download
+                </button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="viewer-controls" style="display: none;" id="viewerControls">
+                <div class="page-controls">
+                    <button class="page-btn" id="prevPageBtn">← Previous</button>
+                    <span class="page-info">
+                        Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
+                    </span>
+                    <button class="page-btn" id="nextPageBtn">Next →</button>
+                </div>
+                <div class="zoom-controls">
+                    <button class="zoom-btn" id="zoomOutBtn">-</button>
+                    <button class="zoom-btn" id="zoomInBtn">+</button>
+                    <button class="zoom-btn" id="fitWidthBtn">Fit</button>
+                </div>
+            </div>
+
+            <div class="pdf-viewer" id="pdfViewer">
+                <div class="welcome-message">
+                    <h2>Welcome to Vibe PDF Editor</h2>
+                    <p>Upload a PDF to start editing</p>
+                    <p>✨ No Adobe Required ✨</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Text Modal -->
+    <div class="modal" id="textModal">
+        <div class="modal-content">
+            <h3>Add Text</h3>
+            <div class="form-group">
+                <label for="textInput">Text:</label>
+                <textarea id="textInput" rows="4" placeholder="Enter text to add..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="textSize">Font Size:</label>
+                <input type="number" id="textSize" value="12" min="8" max="72">
+            </div>
+            <div class="form-group">
+                <label for="textColor">Color:</label>
+                <input type="color" id="textColor" value="#000000">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="cancelTextBtn">Cancel</button>
+                <button class="btn-primary" id="confirmTextBtn">Add Text</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Image Modal -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <h3>Add Image</h3>
+            <div class="form-group">
+                <label for="imageInput">Select Image:</label>
+                <input type="file" id="imageInput" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label for="imageWidth">Width (px):</label>
+                <input type="number" id="imageWidth" value="200" min="50" max="1000">
+            </div>
+            <div class="form-group">
+                <label for="imageHeight">Height (px):</label>
+                <input type="number" id="imageHeight" value="200" min="50" max="1000">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="cancelImageBtn">Cancel</button>
+                <button class="btn-primary" id="confirmImageBtn">Add Image</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signature Modal -->
+    <div class="modal" id="signatureModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <h3>Draw Your Signature</h3>
+            <div style="border: 2px solid #667eea; border-radius: 8px; background: white; margin-bottom: 1rem;">
+                <canvas id="signatureCanvas" width="560" height="200" style="cursor: crosshair; display: block;"></canvas>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="clearSignatureBtn">Clear</button>
+                <button class="btn-secondary" id="cancelSignatureBtn">Cancel</button>
+                <button class="btn-primary" id="confirmSignatureBtn">Add Signature</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
+
