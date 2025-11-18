@@ -254,14 +254,26 @@
             position: absolute;
             top: 0;
             left: -100%;
-            width: 100%;
+            width: 50%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.1) 25%,
+                rgba(255, 255, 255, 0.4) 50%,
+                rgba(255, 255, 255, 0.1) 75%,
+                transparent 100%
+            );
+            animation: shimmer 3s infinite;
+            transform: skewX(-20deg);
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 200%; }
         }
 
         .tool-btn:hover::before {
-            left: 100%;
+            animation: shimmer 1.5s infinite;
         }
 
         .tool-btn:hover {
@@ -422,6 +434,30 @@
             font-family: 'Orbitron', monospace;
             text-transform: uppercase;
             letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.15) 25%,
+                rgba(255, 255, 255, 0.5) 50%,
+                rgba(255, 255, 255, 0.15) 75%,
+                transparent 100%
+            );
+            animation: shimmer 3.5s infinite;
+            transform: skewX(-20deg);
+        }
+
+        .page-btn:hover::before {
+            animation: shimmer 1.5s infinite;
         }
 
         .page-btn:hover {
@@ -458,6 +494,35 @@
             font-weight: 900;
             transition: all 0.2s ease;
             font-family: 'Orbitron', monospace;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .zoom-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(153, 204, 255, 0.2) 25%,
+                rgba(153, 204, 255, 0.5) 50%,
+                rgba(153, 204, 255, 0.2) 75%,
+                transparent 100%
+            );
+            animation: shimmerBlue 4s infinite;
+            transform: skewX(-20deg);
+        }
+
+        @keyframes shimmerBlue {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
+        .zoom-btn:hover::before {
+            animation: shimmerBlue 1.5s infinite;
         }
 
         .zoom-btn:hover {
@@ -665,6 +730,30 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 900;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.15) 25%,
+                rgba(255, 255, 255, 0.5) 50%,
+                rgba(255, 255, 255, 0.15) 75%,
+                transparent 100%
+            );
+            animation: shimmer 3s infinite;
+            transform: skewX(-20deg);
+        }
+
+        .btn-primary:hover::before {
+            animation: shimmer 1.2s infinite;
         }
 
         .btn-primary:hover {
@@ -685,6 +774,30 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 700;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(153, 204, 255, 0.2) 25%,
+                rgba(153, 204, 255, 0.5) 50%,
+                rgba(153, 204, 255, 0.2) 75%,
+                transparent 100%
+            );
+            animation: shimmerBlue 3.5s infinite;
+            transform: skewX(-20deg);
+        }
+
+        .btn-secondary:hover::before {
+            animation: shimmerBlue 1.5s infinite;
         }
 
         .btn-secondary:hover {
