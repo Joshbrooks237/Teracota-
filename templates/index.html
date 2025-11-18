@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe PDF Editor - Adobe-Free PDF Editing</title>
+    <title>USS Enterprise PDF Command - Starfleet Document System</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
@@ -12,30 +14,100 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Orbitron', 'Courier New', monospace;
+            background: #000000;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(0, 100, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 100, 0, 0.1) 0%, transparent 50%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            color: #FFAA00;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(255, 170, 0, 0.03) 0px,
+                    transparent 1px,
+                    transparent 2px,
+                    rgba(255, 170, 0, 0.03) 3px
+                );
+            pointer-events: none;
+            z-index: 1;
+            animation: scanlines 8s linear infinite;
+        }
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.95);
+            background: linear-gradient(90deg, #CC6600 0%, #FF9933 2%, #000 2%, #000 98%, #FF9933 98%, #CC6600 100%);
             backdrop-filter: blur(10px);
             padding: 1.5rem 2rem;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 30px rgba(255, 170, 0, 0.5);
+            border-bottom: 3px solid #FFAA00;
+            position: relative;
+            z-index: 10;
         }
 
         .header h1 {
-            color: #667eea;
-            font-size: 2rem;
-            font-weight: 700;
+            color: #FFAA00;
+            font-size: 2.2rem;
+            font-weight: 900;
             margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(255, 170, 0, 0.8), 0 0 40px rgba(255, 170, 0, 0.4);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255, 170, 0, 0.8), 0 0 40px rgba(255, 170, 0, 0.4); }
+            to { text-shadow: 0 0 30px rgba(255, 170, 0, 1), 0 0 60px rgba(255, 170, 0, 0.6); }
         }
 
         .header p {
-            color: #666;
+            color: #99CCFF;
             font-size: 0.95rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .header::before {
+            content: '⭐ NCC-1701';
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: #99CCFF;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .header::after {
+            content: '🍺 KIRK MODE ACTIVE';
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            color: #FF6B35;
+            font-size: 0.8rem;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
         }
 
         .container {
@@ -46,55 +118,94 @@
             max-width: 1800px;
             margin: 0 auto;
             width: 100%;
+            position: relative;
+            z-index: 5;
         }
 
         .sidebar {
-            background: rgba(255, 255, 255, 0.95);
+            background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
             backdrop-filter: blur(10px);
-            border-radius: 16px;
+            border-radius: 0;
+            border-left: 6px solid #FFAA00;
+            border-right: 3px solid #CC6600;
             padding: 2rem;
-            min-width: 320px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            min-width: 350px;
+            box-shadow: 0 0 50px rgba(255, 170, 0, 0.3), inset 0 0 30px rgba(255, 170, 0, 0.1);
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
+            position: relative;
+        }
+
+        .sidebar::before {
+            content: 'LCARS 24.7';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #666;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
         }
 
         .upload-zone {
-            border: 3px dashed #667eea;
-            border-radius: 12px;
+            border: 3px solid #FFAA00;
+            border-radius: 0;
             padding: 3rem 2rem;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(255, 170, 0, 0.1) 0%, rgba(0, 100, 255, 0.1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-zone::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #FFAA00, #99CCFF, #FFAA00);
+            z-index: -1;
+            animation: borderRotate 3s linear infinite;
+        }
+
+        @keyframes borderRotate {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
         }
 
         .upload-zone:hover {
-            border-color: #764ba2;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(255, 170, 0, 0.2) 0%, rgba(0, 100, 255, 0.2) 100%);
             transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(255, 170, 0, 0.6);
         }
 
         .upload-zone.dragging {
-            border-color: #764ba2;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            background: linear-gradient(135deg, rgba(255, 170, 0, 0.3) 0%, rgba(0, 100, 255, 0.3) 100%);
+            box-shadow: 0 0 60px rgba(255, 170, 0, 0.8);
         }
 
         .upload-icon {
             font-size: 4rem;
             margin-bottom: 1rem;
+            filter: drop-shadow(0 0 10px rgba(255, 170, 0, 0.8));
         }
 
         .upload-zone h3 {
-            color: #667eea;
+            color: #FFAA00;
             margin-bottom: 0.5rem;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.8);
         }
 
         .upload-zone p {
-            color: #999;
+            color: #99CCFF;
             font-size: 0.9rem;
+            letter-spacing: 1px;
         }
 
         .toolbar {
@@ -104,63 +215,117 @@
         }
 
         .tool-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
+            background: linear-gradient(90deg, #CC6600 0%, #FF9933 100%);
+            color: #000000;
+            border: 2px solid #FFAA00;
             padding: 1rem;
-            border-radius: 10px;
+            border-radius: 30px;
             cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            font-weight: 900;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 0 20px rgba(255, 170, 0, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Orbitron', monospace;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .tool-btn:hover::before {
+            left: 100%;
         }
 
         .tool-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 170, 0, 0.8);
+            background: linear-gradient(90deg, #FF9933 0%, #FFAA00 100%);
         }
 
         .tool-btn:active {
-            transform: translateY(0);
+            transform: scale(0.98);
         }
 
         .tool-btn.active {
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            background: linear-gradient(90deg, #99CCFF 0%, #0066CC 100%);
+            border-color: #99CCFF;
+            box-shadow: 0 0 30px rgba(153, 204, 255, 0.8);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(153, 204, 255, 0.8); }
+            50% { box-shadow: 0 0 50px rgba(153, 204, 255, 1); }
         }
 
         .tool-btn:disabled {
-            opacity: 0.5;
+            opacity: 0.3;
             cursor: not-allowed;
+            background: #333;
+            border-color: #555;
         }
 
         .pdf-info {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(255, 170, 0, 0.1) 0%, rgba(0, 100, 255, 0.1) 100%);
             padding: 1.5rem;
-            border-radius: 10px;
+            border-radius: 0;
+            border: 2px solid #CC6600;
             display: none;
+            position: relative;
         }
 
         .pdf-info.visible {
             display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .pdf-info h3 {
-            color: #667eea;
+            color: #FFAA00;
             margin-bottom: 1rem;
             font-size: 1.1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.8);
+        }
+
+        .pdf-info::before {
+            content: '[ DOCUMENT ANALYSIS ]';
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            background: #000;
+            padding: 0 10px;
+            color: #FFAA00;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
         }
 
         .info-item {
             display: flex;
             justify-content: space-between;
             padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
-            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255, 170, 0, 0.3);
+            font-size: 0.85rem;
         }
 
         .info-item:last-child {
@@ -168,25 +333,43 @@
         }
 
         .info-label {
-            color: #666;
-            font-weight: 500;
+            color: #99CCFF;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .info-value {
-            color: #333;
-            font-weight: 600;
+            color: #FFAA00;
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba(255, 170, 0, 0.5);
         }
 
         .main-content {
             flex: 1;
-            background: rgba(255, 255, 255, 0.95);
+            background: linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 100%);
             backdrop-filter: blur(10px);
-            border-radius: 16px;
+            border-radius: 0;
+            border: 3px solid #FFAA00;
+            border-left: 6px solid #CC6600;
             padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 50px rgba(255, 170, 0, 0.3), inset 0 0 30px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            position: relative;
+        }
+
+        .main-content::before {
+            content: '◀ VIEWSCREEN ▶';
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: #FFAA00;
+            font-size: 0.8rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            z-index: 10;
         }
 
         .viewer-controls {
@@ -205,25 +388,31 @@
         }
 
         .page-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
+            background: linear-gradient(90deg, #CC6600 0%, #FF9933 100%);
+            color: #000000;
+            border: 2px solid #FFAA00;
             padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+            border-radius: 25px;
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-weight: 900;
+            transition: all 0.2s ease;
+            font-family: 'Orbitron', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .page-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 170, 0, 0.8);
+            background: linear-gradient(90deg, #FF9933 0%, #FFAA00 100%);
         }
 
         .page-info {
-            color: #667eea;
-            font-weight: 600;
-            font-size: 1.1rem;
+            color: #FFAA00;
+            font-weight: 900;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 0.8);
         }
 
         .zoom-controls {
@@ -232,19 +421,21 @@
         }
 
         .zoom-btn {
-            background: white;
-            border: 2px solid #667eea;
-            color: #667eea;
+            background: #1a1a1a;
+            border: 2px solid #99CCFF;
+            color: #99CCFF;
             padding: 0.75rem 1rem;
-            border-radius: 8px;
+            border-radius: 20px;
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-weight: 900;
+            transition: all 0.2s ease;
+            font-family: 'Orbitron', monospace;
         }
 
         .zoom-btn:hover {
-            background: #667eea;
-            color: white;
+            background: linear-gradient(90deg, #0066CC 0%, #99CCFF 100%);
+            color: #000;
+            box-shadow: 0 0 20px rgba(153, 204, 255, 0.8);
         }
 
         .pdf-viewer {
@@ -253,16 +444,31 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            background: #f5f5f5;
-            border-radius: 12px;
+            background: #000000;
+            border-radius: 0;
+            border: 2px solid #CC6600;
             padding: 2rem;
+            position: relative;
+        }
+
+        .pdf-viewer::before {
+            content: '[ SCANNING... ]';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            color: #FFAA00;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            opacity: 0.7;
         }
 
         .pdf-canvas-container {
             position: relative;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
+            box-shadow: 0 0 50px rgba(255, 170, 0, 0.5), 0 0 100px rgba(0, 100, 255, 0.3);
+            border-radius: 0;
             overflow: hidden;
+            border: 3px solid #FFAA00;
         }
 
         #pdfCanvas {
@@ -283,19 +489,32 @@
 
         .welcome-message {
             text-align: center;
-            color: #999;
+            color: #FFAA00;
             padding: 4rem;
+            animation: fadeInPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes fadeInPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
         }
 
         .welcome-message h2 {
-            color: #667eea;
-            font-size: 2rem;
-            margin-bottom: 1rem;
+            color: #FFAA00;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255, 170, 0, 1);
+            font-weight: 900;
         }
 
         .welcome-message p {
-            font-size: 1.1rem;
-            line-height: 1.6;
+            font-size: 1.2rem;
+            line-height: 2;
+            color: #99CCFF;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(153, 204, 255, 0.5);
         }
 
         .modal {
@@ -317,18 +536,40 @@
         }
 
         .modal-content {
-            background: white;
-            border-radius: 16px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+            border-radius: 0;
+            border: 4px solid #FFAA00;
             padding: 2rem;
             max-width: 500px;
             width: 90%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 80px rgba(255, 170, 0, 0.8);
+            position: relative;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #FFAA00, #99CCFF, #FFAA00);
+            z-index: -1;
+            animation: borderGlow 2s linear infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
 
         .modal-content h3 {
-            color: #667eea;
+            color: #FFAA00;
             margin-bottom: 1.5rem;
             font-size: 1.5rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(255, 170, 0, 0.8);
         }
 
         .form-group {
@@ -346,16 +587,25 @@
         .form-group textarea {
             width: 100%;
             padding: 0.75rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border: 2px solid #CC6600;
+            border-radius: 0;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
+            background: #000;
+            color: #FFAA00;
+            font-family: 'Orbitron', monospace;
+            transition: all 0.3s ease;
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #FFAA00;
+            box-shadow: 0 0 20px rgba(255, 170, 0, 0.5);
+        }
+
+        .form-group label {
+            color: #99CCFF;
+            letter-spacing: 1px;
         }
 
         .modal-actions {
@@ -375,22 +625,33 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(90deg, #CC6600 0%, #FF9933 100%);
+            color: #000;
+            border: 2px solid #FFAA00;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 900;
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 170, 0, 0.8);
+            background: linear-gradient(90deg, #FF9933 0%, #FFAA00 100%);
         }
 
         .btn-secondary {
-            background: #f0f0f0;
-            color: #666;
+            background: #1a1a1a;
+            color: #99CCFF;
+            border: 2px solid #99CCFF;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
         }
 
         .btn-secondary:hover {
-            background: #e0e0e0;
+            background: #0066CC;
+            color: #000;
+            box-shadow: 0 0 20px rgba(153, 204, 255, 0.6);
         }
 
         .loading {
@@ -399,26 +660,43 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
             padding: 2rem 3rem;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border-radius: 0;
+            border: 4px solid #FFAA00;
+            box-shadow: 0 0 100px rgba(255, 170, 0, 0.9);
             z-index: 2000;
             text-align: center;
         }
 
         .loading.active {
             display: block;
+            animation: loadingPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { box-shadow: 0 0 80px rgba(255, 170, 0, 0.9); }
+            50% { box-shadow: 0 0 120px rgba(255, 170, 0, 1); }
+        }
+
+        .loading p {
+            color: #FFAA00;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 170, 0, 1);
         }
 
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+            border: 4px solid #333;
+            border-top: 4px solid #FFAA00;
+            border-right: 4px solid #99CCFF;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
+            width: 60px;
+            height: 60px;
+            animation: spin 0.8s linear infinite;
             margin: 0 auto 1rem;
+            box-shadow: 0 0 30px rgba(255, 170, 0, 0.6);
         }
 
         @keyframes spin {
@@ -433,23 +711,23 @@
 </head>
 <body>
     <div class="header">
-        <h1>🚀 Vibe PDF Editor</h1>
-        <p>Powerful PDF editing without Adobe - Free, Fast, Beautiful</p>
+        <h1>🖖 USS ENTERPRISE PDF COMMAND</h1>
+        <p>Starfleet Document Processing System - Captain Kirk Approved</p>
     </div>
 
     <div class="container">
         <div class="sidebar">
             <div class="upload-zone" id="uploadZone">
-                <div class="upload-icon">📄</div>
-                <h3>Drop PDF Here</h3>
-                <p>or click to browse</p>
+                <div class="upload-icon">📡</div>
+                <h3>Beam Up PDF</h3>
+                <p>Transport Documents to Bridge</p>
                 <input type="file" id="fileInput" accept=".pdf">
             </div>
 
             <div class="pdf-info" id="pdfInfo">
-                <h3>📊 Document Info</h3>
+                <h3>🖥️ Tricorder Scan</h3>
                 <div class="info-item">
-                    <span class="info-label">Filename:</span>
+                    <span class="info-label">File:</span>
                     <span class="info-value" id="infoFilename">-</span>
                 </div>
                 <div class="info-item">
@@ -457,35 +735,35 @@
                     <span class="info-value" id="infoPages">-</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Size:</span>
+                    <span class="info-label">Data Size:</span>
                     <span class="info-value" id="infoSize">-</span>
                 </div>
             </div>
 
             <div class="toolbar">
                 <button class="tool-btn" id="addTextBtn" disabled>
-                    <span>✏️</span> Add Text
+                    <span>⚡</span> Text
                 </button>
                 <button class="tool-btn" id="highlightBtn" disabled>
-                    <span>🖍️</span> Highlight
+                    <span>🔆</span> Mark
                 </button>
                 <button class="tool-btn" id="addImageBtn" disabled>
-                    <span>🖼️</span> Add Image
+                    <span>📷</span> Image
                 </button>
                 <button class="tool-btn" id="signatureBtn" disabled>
-                    <span>✍️</span> Sign
+                    <span>🖊️</span> Kirk Sign
                 </button>
                 <button class="tool-btn" id="rotateBtn" disabled>
                     <span>🔄</span> Rotate
                 </button>
                 <button class="tool-btn" id="deletePageBtn" disabled>
-                    <span>🗑️</span> Delete Page
+                    <span>💥</span> Phaser
                 </button>
                 <button class="tool-btn" id="extractTextBtn" disabled>
-                    <span>📝</span> Extract Text
+                    <span>📡</span> Scan
                 </button>
                 <button class="tool-btn" id="downloadBtn" disabled>
-                    <span>💾</span> Download
+                    <span>💾</span> Transport
                 </button>
             </div>
         </div>
@@ -493,11 +771,11 @@
         <div class="main-content">
             <div class="viewer-controls" style="display: none;" id="viewerControls">
                 <div class="page-controls">
-                    <button class="page-btn" id="prevPageBtn">← Previous</button>
+                    <button class="page-btn" id="prevPageBtn">◀ AFT</button>
                     <span class="page-info">
-                        Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
+                        SECTOR <span id="currentPage">1</span> / <span id="totalPages">1</span>
                     </span>
-                    <button class="page-btn" id="nextPageBtn">Next →</button>
+                    <button class="page-btn" id="nextPageBtn">FWD ▶</button>
                 </div>
                 <div class="zoom-controls">
                     <button class="zoom-btn" id="zoomOutBtn">-</button>
@@ -508,9 +786,10 @@
 
             <div class="pdf-viewer" id="pdfViewer">
                 <div class="welcome-message">
-                    <h2>Welcome to Vibe PDF Editor</h2>
-                    <p>Upload a PDF to start editing</p>
-                    <p>✨ No Adobe Required ✨</p>
+                    <h2>ENTERPRISE READY</h2>
+                    <p>Beam up a document to commence operations</p>
+                    <p>🍺 Kirk Mode: Activated</p>
+                    <p>🖖 Live Long & Prosper (Adobe-Free)</p>
                 </div>
             </div>
         </div>
@@ -580,7 +859,7 @@
     <!-- Loading Indicator -->
     <div class="loading" id="loading">
         <div class="spinner"></div>
-        <p>Processing...</p>
+        <p>🚀 ENGAGING... 🍺</p>
     </div>
 
     <script src="/static/app.js"></script>
